@@ -49,6 +49,7 @@ Elke bibliotheek bevat informatie zoals:
 - Nederlandstalig
 - Franstalig
 - Alle talen
+
 ✅ Filteren op postcode  
 ✅ Automatisch beschikbare postcodes tonen
 
