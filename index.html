@@ -27,46 +27,48 @@
     <main>
 
         <section class="welkom">
-
-            <h2>Ontdek bibliotheken in Brussel</h2>
+            <h2>Ontdek Brusselse bibliotheken</h2>
             <p>
-                Zoek, filter en bewaar jouw favoriete bibliotheken.
+                Zoek eenvoudig tussen Nederlandstalige en Franstalige bibliotheken.
             </p>
-
         </section>
 
-
-        <section class="zoeken">
-
+        <section class="filters">
             <input
                 type="text"
                 id="zoek"
-                placeholder="Zoek een bibliotheek">
+                placeholder="Zoek een bibliotheek...">
 
-            <select id="filter">
+            <select id="taal">
 
-                <option>Alle gemeenten</option>
+                <option value="alles">Alle talen</option>
+                <option value="Nederlandstalig">Nederlandstalig</option>
+                <option value="Franstalig">Franstalig</option>
+
+            </select>
+
+            <select id="gemeente">
+
+                <option value="alles">Alle gemeenten</option>
 
             </select>
 
             <select id="sorteren">
 
-                <option>A-Z</option>
-                <option>Z-A</option>
+                <option value="az">Naam A-Z</option>
+                <option value="za">Naam Z-A</option>
 
             </select>
 
         </section>
 
-
         <section id="bibliotheken">
 
-            <!-- Bibliotheken komen hier -->
+            <!-- Hier komen de kaarten -->
 
         </section>
 
     </main>
-
 
     <footer>
         <p>Brusselse Bibliotheken © 2026</p>
