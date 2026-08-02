@@ -27,7 +27,6 @@ async function laadBibliotheken() {
         }));
 
         bibliotheken = [...fr, ...nl];
-
         vulPostcodes();
         filterBibliotheken();
 
@@ -43,9 +42,7 @@ async function laadBibliotheken() {
 
 laadBibliotheken();
 
-// ----------------------
 // Bibliotheken tonen
-// ----------------------
 
 function toonBibliotheken(lijst) {
 
@@ -98,9 +95,7 @@ function toonBibliotheken(lijst) {
 
 }
 
-// ----------------------
 // Postcodes vullen
-// ----------------------
 
 function vulPostcodes() {
 
@@ -133,9 +128,8 @@ function vulPostcodes() {
 
 }
 
-// ----------------------
 // Filteren en sorteren
-// ----------------------
+
 
 function filterBibliotheken() {
 
