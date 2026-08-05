@@ -2,19 +2,19 @@
 
 ## Projectbeschrijving
 
-Brussels Library Explorer is een interactieve webapplicatie waarmee gebruikers bibliotheken in Brussel kunnen ontdekken.
+Brussels Library Explorer is een interactieve webapplicatie waarmee gebruikers openbare bibliotheken in Brussel kunnen ontdekken.
 
-De applicatie gebruikt open data van de stad Brussel en toont informatie over zowel Nederlandstalige als Franstalige openbare bibliotheken.
+De applicatie maakt gebruik van de Open Data Brussels API en combineert zowel de Nederlandstalige als de Franstalige bibliotheken in één overzicht. Hierdoor hoeft de gebruiker niet tussen verschillende datasets te zoeken.
 
-Gebruikers kunnen bibliotheken zoeken, filteren en sorteren om snel een geschikte locatie te vinden.
+Gebruikers kunnen bibliotheken zoeken, filteren en sorteren om sneller de gewenste bibliotheek te vinden.
 
-Dit project werd gemaakt voor het vak Dynamic Web.
+Dit project werd ontwikkeld voor het vak **Dynamic Web**.
 
 ---
 
 # Gebruikte datasets
 
-De applicatie gebruikt twee datasets van Open Data Brussels:
+De applicatie gebruikt twee datasets van Open Data Brussels.
 
 ## Franstalige bibliotheken
 
@@ -24,45 +24,46 @@ https://opendata.brussels.be/explore/dataset/bibliotheques_publiques_francophone
 
 https://opendata.brussels.be/explore/dataset/bibliotheques_publiques_neerlandophones_vbx/
 
+De twee datasets worden tijdens het laden samengevoegd tot één lijst met bibliotheken.
 
-De twee datasets worden gecombineerd zodat de gebruiker één overzicht krijgt van Brusselse bibliotheken.
-
-Elke bibliotheek bevat informatie zoals:
+Elke bibliotheek bevat onder andere:
 
 - Naam
 - Adres
+- Gemeente
 - Postcode
 - Taal
-- Locatiegegevens
+- Telefoonnummer
+- Google Maps locatie
 
 ---
 
 # Functionaliteiten
 
-## Momenteel beschikbaar
+## Beschikbaar
 
-✅ Data ophalen via API  
-✅ Twee datasets combineren  
-✅ Bibliotheken weergeven als kaarten  
-✅ Zoeken op bibliotheeknaam  
-✅ Filteren op taal:
-- Nederlandstalig
-- Franstalig
-- Alle talen
+- ✅ Data ophalen via de Open Data Brussels API
+- ✅ Twee datasets combineren tot één overzicht
+- ✅ Bibliotheken weergeven als kaarten
+- ✅ Zoeken op naam
+- ✅ Filteren op taal
+  - Alle talen
+  - Nederlandstalig
+  - Franstalig
+- ✅ Filteren op postcode
+- ✅ Automatisch alle beschikbare postcodes laden
+- ✅ Sorteren op naam (A-Z en Z-A)
+- ✅ Bibliotheken openen in Google Maps
 
-✅ Filteren op postcode  
-✅ Automatisch beschikbare postcodes tonen
-
-
-## Nog geplande functies
+## Nog te ontwikkelen
 
 - Favorieten opslaan
-- Detailpagina/detailvenster voor bibliotheken
-- Sorteren op naam A-Z en Z-A
-- Taalkeuze Nederlands/Frans/Engels
+- Detailvenster met extra informatie
+- About-pagina
 - Contactpagina
-- Responsive verbeteringen voor mobiele toestellen
-
+- Taalkeuze (Nederlands, Frans en Engels)
+- Responsive verbeteringen
+- Themawisselaar (licht/donker)
 
 ---
 
@@ -72,113 +73,75 @@ Elke bibliotheek bevat informatie zoals:
 
 - HTML5
 - CSS3
-- JavaScript
+- JavaScript (ES6)
 
 ## Data
 
 - Open Data Brussels API
 - JSON
-
-## Opslag
-
-- LocalStorage (wordt gebruikt voor favorieten)
+- Fetch API
 
 ## Versiebeheer
 
+- Git
 - GitHub
 
 ---
 
-# Projectstructuur
-
-```
-BrusselsLibraryExplorer
-
-│
-├── index.html
-│
-├── favorites.html
-│
-├── about.html
-│
-├── contact.html
-│
-├── css
-│   └── style.css
-│
-├── js
-│   └── script.js
-│
-└── README.md
-```
-
----
 
 # Installatie
 
-## 1. Repository downloaden
+## Repository downloaden
 
-Clone de repository:
+Clone de repository.
 
+```bash
+git clone https://github.com/samanthakarengera/brusselslibraryexplorer
 ```
-git clone https://github.com/samanthakarengera/brusselslibraryexplorer 
-```
 
-## 2. Open het project
+## Project openen
 
 Open de map in Visual Studio Code.
 
-## 3. Start de website
+## Website starten
 
-Gebruik bijvoorbeeld de extensie:
+Gebruik de extensie **Live Server**.
 
-```
-Live Server
-```
-
-in Visual Studio Code.
-
-De website opent daarna in de browser.
+De website opent automatisch in de browser.
 
 ---
 
-# JavaScript concepten gebruikt
+# JavaScript-concepten
 
 ## DOM manipulatie
 
-Elementen worden geselecteerd en aangepast via JavaScript.
+Gebruikt voor:
 
-Voorbeelden:
-
-- Bibliotheken toevoegen aan de pagina
+- Bibliotheken weergeven
+- Dynamisch kaarten maken
 - Filters aanpassen
-- Kaarten genereren
-
+- Gebruikersinput verwerken
 
 ## Fetch API
 
-De data wordt opgehaald via:
+De bibliotheekgegevens worden opgehaald via de Open Data Brussels API met:
 
 ```javascript
 fetch()
 ```
 
-De API geeft JSON-data terug die wordt verwerkt in JavaScript.
+## Async & Await
 
-
-## Async/Await
-
-Omdat de API-oproepen tijd nodig hebben wordt gewerkt met:
+Omdat gegevens online worden opgehaald, wordt gebruikgemaakt van:
 
 ```javascript
-async function
+async
 await
 ```
 
-
 ## Arrays
 
-De bibliotheekgegevens worden opgeslagen in arrays.
+De gegevens worden opgeslagen in arrays.
 
 Gebruikte methodes:
 
@@ -187,24 +150,47 @@ Gebruikte methodes:
 - sort()
 - forEach()
 
-
 ## Template literals
 
-De HTML-kaarten worden dynamisch gemaakt met:
+Kaarten worden dynamisch opgebouwd met template literals.
 
 ```javascript
 `${waarde}`
 ```
 
+## Events
+
+Gebruikte events:
+
+- input
+- change
+- click
+
+---
+
+# Installatievereisten
+
+- Visual Studio Code
+- Live Server extensie
+- Internetverbinding (voor de API)
+
+---
 
 # Bronvermelding
 
-Open Data Brussels:
+Open Data Brussels
+
 https://opendata.brussels.be/
 
+Gebruikte datasets:
+
+- Nederlandstalige bibliotheken
+- Franstalige bibliotheken
+
 ChatGPT werd gebruikt als ondersteuning bij:
-- structuur van de code
+
+- JavaScript (soms)
 - debugging
 - documentatie
 
-Alle code werd aangepast en begrepen tijdens de ontwikkeling van het project.
+Alle code werd nagekeken, aangepast en begrepen tijdens de ontwikkeling van dit project.
