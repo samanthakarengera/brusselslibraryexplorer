@@ -192,5 +192,3 @@ ChatGPT werd gebruikt als ondersteuning bij:
 - JavaScript (soms)
 - debugging
 - documentatie
-
-Alle code werd nagekeken, aangepast en begrepen tijdens de ontwikkeling van dit project.
