@@ -17,16 +17,29 @@ async function laadBibliotheken() {
         const nlData = await antwoordNl.json();
 
         const fr = frData.results.map(bib => ({
-            ...bib,
+            naam: bib.name_nl,
+            adres: bib.address_nl,
+            gemeente: bib.municipality_nl,
+            postcode: bib.postalcode,
+            telefoon: bib.phone,
+            website: bib.url_nl,
+            maps: bib.google_maps,
             taal: "Franstalig"
         }));
 
         const nl = nlData.results.map(bib => ({
-            ...bib,
+            naam: bib.name_nl,
+            adres: bib.address_nl,
+            gemeente: bib.municipality_nl,
+            postcode: bib.postalcode,
+            telefoon: bib.phone,
+            website: bib.url_nl,
+            maps: bib.google_maps,
             taal: "Nederlandstalig"
         }));
 
         bibliotheken = [...fr, ...nl];
+
         vulPostcodes();
         filterBibliotheken();
 
@@ -34,7 +47,7 @@ async function laadBibliotheken() {
 
     catch (fout) {
 
-        console.log("Fout:", fout);
+        console.log(fout);
 
     }
 
@@ -42,50 +55,48 @@ async function laadBibliotheken() {
 
 laadBibliotheken();
 
-// Bibliotheken tonen
-
 function toonBibliotheken(lijst) {
 
     const container = document.getElementById("bibliotheken");
 
     container.innerHTML = "";
 
-    lijst.forEach(bib => {
+    if (lijst.length == 0) {
 
-        const naam =
-            bib.name_nl ||
-            bib.name_fr ||
-            bib.naam ||
-            "Geen naam";
+        container.innerHTML = "<p>Geen bibliotheken gevonden.</p>";
+        return;
 
-        const adres =
-            bib.address_nl ||
-            bib.address_fr ||
-            bib.adres ||
-            "-";
+    }
 
-        const postcode =
-            bib.postalcode ||
-            bib.code_postal_postcode ||
-            "-";
+    lijst.forEach((bib, index) => {
 
         container.innerHTML += `
 
         <div class="kaart">
 
-            <h3>${naam}</h3>
+            <h3>${bib.naam}</h3>
 
-            <p><strong>Adres:</strong> ${adres}</p>
+            <p><strong>Adres:</strong> ${bib.adres}</p>
 
-            <p><strong>Postcode:</strong> ${postcode}</p>
+            <p><strong>Gemeente:</strong> ${bib.gemeente}</p>
+
+            <p><strong>Postcode:</strong> ${bib.postcode}</p>
 
             <p><strong>Taal:</strong> ${bib.taal}</p>
-
+          
             <div class="knoppen">
 
-                <button>Details</button>
+            <button class="details" data-id="${index}">
+             Details
+            </button>
 
-            </div>
+             <a href="${bib.maps}" target="_blank">
+
+            <button>Google Maps</button>
+
+             </a>
+
+</div>
 
         </div>
 
@@ -95,23 +106,21 @@ function toonBibliotheken(lijst) {
 
 }
 
-// Postcodes vullen
-
 function vulPostcodes() {
 
     const select = document.getElementById("postcode");
 
-    const lijst = [];
+    select.innerHTML = `
+        <option value="alles">Alle postcodes</option>
+    `;
+
+    let lijst = [];
 
     bibliotheken.forEach(bib => {
 
-        const code =
-            bib.postalcode ||
-            bib.code_postal_postcode;
+        if (!lijst.includes(bib.postcode)) {
 
-        if (code && !lijst.includes(code)) {
-
-            lijst.push(code);
+            lijst.push(bib.postcode);
 
         }
 
@@ -121,41 +130,32 @@ function vulPostcodes() {
 
     lijst.forEach(code => {
 
-        select.innerHTML +=
-            `<option value="${code}">${code}</option>`;
+        select.innerHTML += `
+            <option value="${code}">
+                ${code}
+            </option>
+        `;
 
     });
 
 }
 
-// Filteren en sorteren
-
-
 function filterBibliotheken() {
 
     let resultaat = [...bibliotheken];
-
-    // Zoekfunctie
 
     const zoek =
         document.getElementById("zoek").value.toLowerCase();
 
     if (zoek != "") {
 
-        resultaat = resultaat.filter(bib => {
+        resultaat = resultaat.filter(bib =>
 
-            const naam =
-                bib.name_nl ||
-                bib.name_fr ||
-                "";
+            bib.naam.toLowerCase().includes(zoek)
 
-            return naam.toLowerCase().includes(zoek);
-
-        });
+        );
 
     }
-
-    // Taal
 
     const taal =
         document.getElementById("taal").value;
@@ -170,56 +170,37 @@ function filterBibliotheken() {
 
     }
 
-    // Postcode
-
     const postcode =
         document.getElementById("postcode").value;
 
     if (postcode != "alles") {
 
-        resultaat = resultaat.filter(bib => {
+        resultaat = resultaat.filter(bib =>
 
-            const code =
-                bib.postalcode ||
-                bib.code_postal_postcode;
+            bib.postcode == postcode
 
-            return code == postcode;
-
-        });
+        );
 
     }
-
-    // Sorteren
 
     const sorteren =
         document.getElementById("sorteren").value;
 
     resultaat.sort((a, b) => {
 
-        const naamA =
-            a.name_nl ||
-            a.name_fr ||
-            "";
-
-        const naamB =
-            b.name_nl ||
-            b.name_fr ||
-            "";
-
         if (sorteren == "az") {
 
-            return naamA.localeCompare(naamB);
+            return a.naam.localeCompare(b.naam);
 
         }
 
-        return naamB.localeCompare(naamA);
+        return b.naam.localeCompare(a.naam);
 
     });
 
     toonBibliotheken(resultaat);
 
 }
-// Events
 
 document.getElementById("zoek")
 .addEventListener("input", filterBibliotheken);
