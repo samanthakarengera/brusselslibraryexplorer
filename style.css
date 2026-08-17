@@ -127,3 +127,32 @@ footer{
     }
 
 }
+
+
+#favorieten {
+    width: 90%;
+    max-width: 1200px;
+    margin: 40px auto;
+    display: grid;
+    grid-template-columns:
+        repeat(auto-fit, minmax(300px, 1fr));
+
+    gap: 20px;
+
+}
+
+.geen-favorieten {
+    text-align: center;
+    padding: 40px;
+    background: white;
+    border-radius: 10px;
+
+}
+
+.verwijder {
+    background: #d9534f;
+}
+
+.verwijder:hover {
+    background: #b52b27;
+}
