@@ -156,3 +156,59 @@ footer{
 .verwijder:hover {
     background: #b52b27;
 }
+.about,
+.contact {
+    width: 90%;
+    max-width: 800px;
+    margin: 20px auto;
+}
+
+.about h2,
+.about h3 {
+    margin-bottom: 15px;
+}
+
+.about p {
+    margin-bottom: 20px;
+    line-height: 1.6;
+}
+
+.about ul {
+    margin: 15px 0 25px 20px;
+}
+
+.about li {
+    margin-bottom: 8px;
+}
+
+.about a {
+    color: #005b96;
+}
+
+.contact form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.contact label {
+    font-weight: bold;
+    margin-top: 5px;
+}
+
+.contact input,
+.contact textarea {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-family: inherit;
+}
+
+.contact textarea {
+    resize: vertical;
+}
+
+.contact button {
+    margin-top: 10px;
+    width: fit-content;
+}
