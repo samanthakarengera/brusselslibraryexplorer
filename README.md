@@ -57,12 +57,12 @@ Elke bibliotheek bevat onder andere:
 - ✅ Favorieten opslaan
 - ✅ About-pagina
 - ✅ Contactpagina
-- ✅  Detailvenster met extra informatie
+- ✅ Detailvenster met extra informatie
+- ✅ Responsive verbeteringen
 
 ## Nog te ontwikkelen
 
 - Taalkeuze (Nederlands, Frans en Engels)
-- Responsive verbeteringen
 - Themawisselaar (licht/donker)
 
 ---
