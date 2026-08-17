@@ -212,3 +212,53 @@ footer{
     margin-top: 10px;
     width: fit-content;
 }
+/* DETAIL VENSTER */
+
+.detail-venster {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+
+.detail-inhoud {
+    background: white;
+    width: 90%;
+    max-width: 500px;
+    padding: 30px;
+    border-radius: 12px;
+    position: relative;
+}
+
+
+.detail-inhoud h2 {
+    margin-bottom: 20px;
+}
+
+
+.detail-inhoud p {
+    margin-bottom: 12px;
+}
+
+
+.sluiten {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    border: none;
+    background: none;
+    font-size: 28px;
+    cursor: pointer;
+}
+
+
+.detail-knoppen {
+    margin-top: 20px;
+}

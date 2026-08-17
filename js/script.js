@@ -131,7 +131,7 @@ function toonBibliotheken(lijst) {
                         hartje +
                     '</button>' +
 
-                    '<button class="details">' +
+                    '<button class="details" data-naam="' + bib.naam + '">' +
                         'Details' +
                     '</button>' +
 
@@ -295,6 +295,8 @@ function filterBibliotheken() {
 
 
     toonBibliotheken(resultaat);
+    voegFavorietEventsToe();
+    voegDetailEventsToe();
 
 }
 
@@ -544,3 +546,87 @@ if (sorteren) {
 
 
 toonFavorieten();
+
+
+// ================= DETAIL VENSTER =================
+
+function voegDetailEventsToe() {
+
+    const knoppen =
+        document.querySelectorAll(".details");
+
+
+    knoppen.forEach(knop => {
+
+        knop.addEventListener("click", function () {
+
+            const naam =
+                this.dataset.naam;
+
+
+            const bibliotheek =
+                bibliotheken.find(
+                    bib => bib.naam === naam
+                );
+
+
+            if (!bibliotheek) {
+                return;
+            }
+            document.getElementById("detailNaam").textContent =
+                bibliotheek.naam;
+            document.getElementById("detailAdres").textContent =
+                bibliotheek.adres;
+            document.getElementById("detailGemeente").textContent =
+                bibliotheek.gemeente;
+            document.getElementById("detailPostcode").textContent =
+                bibliotheek.postcode;
+            document.getElementById("detailTaal").textContent =
+                bibliotheek.taal;
+            document.getElementById("detailTelefoon").textContent =
+                bibliotheek.telefoon || "Niet beschikbaar";
+            document.getElementById("detailKaart").href =
+                bibliotheek.maps;
+            document.getElementById("detailVenster").style.display =
+                "flex";
+
+        });
+
+    });
+
+}
+
+const sluiten =
+    document.getElementById("sluiten");
+
+
+if (sluiten) {
+
+    sluiten.addEventListener("click", function () {
+
+        document.getElementById("detailVenster").style.display =
+            "none";
+
+    });
+
+}
+
+
+// Sluiten wnr je naast het venster klikt
+
+const detailVenster =
+    document.getElementById("detailVenster");
+
+if (detailVenster) {
+
+    detailVenster.addEventListener("click", function(event) {
+
+        if (event.target === detailVenster) {
+
+            detailVenster.style.display = "none";
+
+        }
+
+    });
+
+}
