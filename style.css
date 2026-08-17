@@ -225,11 +225,14 @@ footer{
     justify-content: center;
     align-items: center;
     padding: 20px;
+
 }
 
 
 .detail-inhoud {
+
     background: white;
+
     width: 90%;
     max-width: 500px;
     padding: 30px;
@@ -252,10 +255,23 @@ footer{
     position: absolute;
     top: 10px;
     right: 15px;
+    width: 35px;
+    height: 35px;
     border: none;
-    background: none;
-    font-size: 28px;
+    border-radius: 50%;
+    background: #f1f1f1;
+    color: #333;
+    font-size: 25px;
+    line-height: 30px;
     cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.sluiten:hover {
+    background: #ddd;
+    color: #000;
 }
 
 
