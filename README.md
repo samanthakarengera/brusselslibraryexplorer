@@ -242,6 +242,8 @@ Er wordt onder andere gebruikgemaakt van:
 ```javascript
 document.getElementById()
 
+document.getElementById()
+
 ---
 
 # Installatie en gebruik
