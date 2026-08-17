@@ -55,12 +55,12 @@ Elke bibliotheek bevat onder andere:
 - ✅ Sorteren op naam (A-Z en Z-A)
 - ✅ Bibliotheken openen in Google Maps
 - ✅ Favorieten opslaan
+- ✅ About-pagina
+- ✅ Contactpagina
 
 ## Nog te ontwikkelen
 
 - Detailvenster met extra informatie
-- About-pagina
-- Contactpagina
 - Taalkeuze (Nederlands, Frans en Engels)
 - Responsive verbeteringen
 - Themawisselaar (licht/donker)
