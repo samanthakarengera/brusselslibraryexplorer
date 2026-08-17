@@ -58,7 +58,6 @@ Elke bibliotheek bevat onder andere:
 
 ## Nog te ontwikkelen
 
-- Favorieten opslaan
 - Detailvenster met extra informatie
 - About-pagina
 - Contactpagina
