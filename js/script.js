@@ -1,10 +1,13 @@
 const frUrl =
-"https://opendata.brussels.be/api/explore/v2.1/catalog/datasets/bibliotheques_publiques_francophones_vbx/records?limit=100";
+    "https://opendata.brussels.be/api/explore/v2.1/catalog/datasets/bibliotheques_publiques_francophones_vbx/records?limit=100";
 
 const nlUrl =
-"https://opendata.brussels.be/api/explore/v2.1/catalog/datasets/bibliotheques_publiques_neerlandophones_vbx/records?limit=100";
+    "https://opendata.brussels.be/api/explore/v2.1/catalog/datasets/bibliotheques_publiques_neerlandophones_vbx/records?limit=100";
 
 let bibliotheken = [];
+
+
+//API
 
 async function laadBibliotheken() {
 
@@ -16,7 +19,9 @@ async function laadBibliotheken() {
         const frData = await antwoordFr.json();
         const nlData = await antwoordNl.json();
 
+
         const fr = frData.results.map(bib => ({
+
             naam: bib.name_nl,
             adres: bib.address_nl,
             gemeente: bib.municipality_nl,
@@ -25,9 +30,12 @@ async function laadBibliotheken() {
             website: bib.url_nl,
             maps: bib.google_maps,
             taal: "Franstalig"
+
         }));
 
+
         const nl = nlData.results.map(bib => ({
+
             naam: bib.name_nl,
             adres: bib.address_nl,
             gemeente: bib.municipality_nl,
@@ -36,7 +44,9 @@ async function laadBibliotheken() {
             website: bib.url_nl,
             maps: bib.google_maps,
             taal: "Nederlandstalig"
+
         }));
+
 
         bibliotheken = [...fr, ...nl];
 
@@ -47,78 +57,124 @@ async function laadBibliotheken() {
 
     catch (fout) {
 
-        console.log(fout);
+        console.log("Fout bij ophalen van data:", fout);
 
     }
 
 }
 
+
 laadBibliotheken();
+
+
+//BIBLIOTHEKEN TONEN 
 
 function toonBibliotheken(lijst) {
 
     const container = document.getElementById("bibliotheken");
 
+    if (!container) {
+        return;
+    }
+
     container.innerHTML = "";
 
-    if (lijst.length == 0) {
 
-        container.innerHTML = "<p>Geen bibliotheken gevonden.</p>";
+    if (lijst.length === 0) {
+
+        container.innerHTML =
+            "<p>Geen bibliotheken gevonden.</p>";
+
         return;
 
     }
 
-    lijst.forEach((bib, index) => {
 
-        container.innerHTML += `
+    lijst.forEach(bib => {
 
-        <div class="kaart">
+        const favorieten =
+            JSON.parse(localStorage.getItem("favorieten")) || [];
 
-            <h3>${bib.naam}</h3>
+        const isFavoriet = favorieten.some(
+            favoriet => favoriet.naam === bib.naam
+        );
 
-            <p><strong>Adres:</strong> ${bib.adres}</p>
 
-            <p><strong>Gemeente:</strong> ${bib.gemeente}</p>
+        const hartje = isFavoriet ? "❤️" : "♡";
 
-            <p><strong>Postcode:</strong> ${bib.postcode}</p>
 
-            <p><strong>Taal:</strong> ${bib.taal}</p>
-          
-            <div class="knoppen">
+        container.innerHTML +=
+            '<div class="kaart">' +
 
-            <button class="details" data-id="${index}">
-             Details
-            </button>
+                '<h3>' + bib.naam + '</h3>' +
 
-             <a href="${bib.maps}" target="_blank">
+                '<p><strong>Adres:</strong> ' +
+                    bib.adres +
+                '</p>' +
 
-            <button>Google Maps</button>
+                '<p><strong>Gemeente:</strong> ' +
+                    bib.gemeente +
+                '</p>' +
 
-             </a>
+                '<p><strong>Postcode:</strong> ' +
+                    bib.postcode +
+                '</p>' +
 
-</div>
+                '<p><strong>Taal:</strong> ' +
+                    bib.taal +
+                '</p>' +
 
-        </div>
+                '<div class="knoppen">' +
 
-        `;
+                    '<button class="favoriet" ' +
+                        'data-naam="' + bib.naam + '">' +
+                        hartje +
+                    '</button>' +
+
+                    '<button class="details">' +
+                        'Details' +
+                    '</button>' +
+
+                    '<a href="' + bib.maps + '" target="_blank">' +
+                        '<button>Kaart</button>' +
+                    '</a>' +
+
+                '</div>' +
+
+            '</div>';
 
     });
 
+
+    voegFavorietEventsToe();
+
 }
+
+
+// ================= POSTCODES =================
 
 function vulPostcodes() {
 
-    const select = document.getElementById("postcode");
+    const select =
+        document.getElementById("postcode");
 
-    select.innerHTML = `
-        <option value="alles">Alle postcodes</option>
-    `;
+    if (!select) {
+        return;
+    }
 
-    let lijst = [];
+    select.innerHTML =
+        '<option value="alles">Alle postcodes</option>';
+
+
+    const lijst = [];
+
 
     bibliotheken.forEach(bib => {
 
-        if (!lijst.includes(bib.postcode)) {
+        if (
+            bib.postcode &&
+            !lijst.includes(bib.postcode)
+        ) {
 
             lijst.push(bib.postcode);
 
@@ -126,90 +182,365 @@ function vulPostcodes() {
 
     });
 
+
     lijst.sort();
+
 
     lijst.forEach(code => {
 
-        select.innerHTML += `
-            <option value="${code}">
-                ${code}
-            </option>
-        `;
+        select.innerHTML +=
+            '<option value="' + code + '">' +
+                code +
+            '</option>';
 
     });
 
 }
+
+
+// ================= FILTEREN =================
 
 function filterBibliotheken() {
 
     let resultaat = [...bibliotheken];
 
-    const zoek =
-        document.getElementById("zoek").value.toLowerCase();
 
-    if (zoek != "") {
+    // Zoeken
 
-        resultaat = resultaat.filter(bib =>
+    const zoekElement =
+        document.getElementById("zoek");
 
-            bib.naam.toLowerCase().includes(zoek)
+    if (zoekElement) {
 
-        );
+        const zoek =
+            zoekElement.value.toLowerCase();
 
-    }
 
-    const taal =
-        document.getElementById("taal").value;
+        if (zoek !== "") {
 
-    if (taal != "alles") {
+            resultaat = resultaat.filter(bib =>
 
-        resultaat = resultaat.filter(bib =>
+                bib.naam.toLowerCase().includes(zoek)
 
-            bib.taal == taal
-
-        );
-
-    }
-
-    const postcode =
-        document.getElementById("postcode").value;
-
-    if (postcode != "alles") {
-
-        resultaat = resultaat.filter(bib =>
-
-            bib.postcode == postcode
-
-        );
-
-    }
-
-    const sorteren =
-        document.getElementById("sorteren").value;
-
-    resultaat.sort((a, b) => {
-
-        if (sorteren == "az") {
-
-            return a.naam.localeCompare(b.naam);
+            );
 
         }
 
-        return b.naam.localeCompare(a.naam);
+    }
 
-    });
+    const taalElement =
+        document.getElementById("taal");
+
+    if (taalElement) {
+
+        const taal = taalElement.value;
+
+
+        if (taal !== "alles") {
+            resultaat = resultaat.filter(bib =>
+                bib.taal === taal
+            );
+        }
+
+    }
+
+
+    const postcodeElement =
+        document.getElementById("postcode");
+
+    if (postcodeElement) {
+
+        const postcode =
+            postcodeElement.value;
+
+
+        if (postcode !== "alles") {
+
+            resultaat = resultaat.filter(bib =>
+
+                bib.postcode === postcode
+
+            );
+
+        }
+
+    }
+
+
+    // Sorteren
+
+    const sorterenElement =
+        document.getElementById("sorteren");
+
+
+    if (sorterenElement) {
+
+        const sorteren =
+            sorterenElement.value;
+
+
+        resultaat.sort((a, b) => {
+
+            if (sorteren === "az") {
+
+                return a.naam.localeCompare(b.naam);
+
+            }
+
+            return b.naam.localeCompare(a.naam);
+
+        });
+
+    }
+
 
     toonBibliotheken(resultaat);
 
 }
 
-document.getElementById("zoek")
-.addEventListener("input", filterBibliotheken);
 
-document.getElementById("taal")
-.addEventListener("change", filterBibliotheken);
+// ================= FAVORIETEN =================
 
-document.getElementById("postcode")
-.addEventListener("change", filterBibliotheken);
+function voegFavorietToe(naam) {
 
-document.getElementById("sorteren")
-.addEventListener("change", filterBibliotheken);
+    const bibliotheek =
+        bibliotheken.find(bib => bib.naam === naam);
+    if (!bibliotheek) {
+        return;
+    }
+
+
+    let favorieten =
+        JSON.parse(localStorage.getItem("favorieten")) || [];
+
+
+    const bestaatAl =
+        favorieten.some(
+            bib => bib.naam === naam
+        );
+
+
+    if (bestaatAl) {
+
+        favorieten =
+            favorieten.filter(
+                bib => bib.naam !== naam
+            );
+
+    }
+
+    else {
+
+        favorieten.push(bibliotheek);
+
+    }
+
+
+    localStorage.setItem(
+        "favorieten",
+        JSON.stringify(favorieten)
+    );
+
+
+    filterBibliotheken();
+
+}
+
+
+function voegFavorietEventsToe() {
+
+    const knoppen =
+        document.querySelectorAll(".favoriet");
+
+
+    knoppen.forEach(knop => {
+
+        knop.addEventListener("click", function () {
+
+            const naam =
+                this.dataset.naam;
+
+            voegFavorietToe(naam);
+
+        });
+
+    });
+
+}
+
+
+// ================= FAVORIETEN PAGINA =================
+
+function toonFavorieten() {
+
+    const container =
+        document.getElementById("favorieten");
+    if (!container) {
+        return;
+    }
+
+
+    const favorieten =
+        JSON.parse(localStorage.getItem("favorieten")) || [];
+    container.innerHTML = "";
+
+
+    if (favorieten.length === 0) {
+
+        container.innerHTML =
+            '<div class="geen-favorieten">' +
+
+                '<h3>Je hebt nog geen favorieten.</h3>' +
+
+                '<p>' +
+                    'Ga naar de homepagina om een ' +
+                    'bibliotheek toe te voegen.' +
+                '</p>' +
+
+            '</div>';
+
+        return;
+
+    }
+
+
+    favorieten.forEach(bib => {
+
+        container.innerHTML +=
+
+            '<div class="kaart">' +
+
+                '<h3>' + bib.naam + '</h3>' +
+
+                '<p><strong>Adres:</strong> ' +
+                    bib.adres +
+                '</p>' +
+
+                '<p><strong>Gemeente:</strong> ' +
+                    bib.gemeente +
+                '</p>' +
+
+                '<p><strong>Postcode:</strong> ' +
+                    bib.postcode +
+                '</p>' +
+
+                '<p><strong>Taal:</strong> ' +
+                    bib.taal +
+                '</p>' +
+
+                '<div class="knoppen">' +
+
+                    '<a href="' + bib.maps +
+                        '" target="_blank">' +
+
+                        '<button>Kaart</button>' +
+
+                    '</a>' +
+
+                    '<button class="verwijder" ' +
+                        'data-naam="' + bib.naam + '">' +
+
+                        'Verwijderen' +
+
+                    '</button>' +
+
+                '</div>' +
+
+            '</div>';
+
+    });
+
+
+    voegVerwijderEventsToe();
+
+}
+
+
+function voegVerwijderEventsToe() {
+
+    const knoppen =
+        document.querySelectorAll(".verwijder");
+
+
+    knoppen.forEach(knop => {
+
+        knop.addEventListener("click", function () {
+
+            const naam =
+                this.dataset.naam;
+
+
+            let favorieten =
+                JSON.parse(
+                    localStorage.getItem("favorieten")
+                ) || [];
+
+
+            favorieten =
+                favorieten.filter(
+                    bib => bib.naam !== naam
+                );
+
+
+            localStorage.setItem(
+                "favorieten",
+                JSON.stringify(favorieten)
+            );
+
+
+            toonFavorieten();
+
+        });
+
+    });
+
+}
+
+
+// EVENTS 
+
+const zoek =
+    document.getElementById("zoek");
+
+if (zoek) {
+    zoek.addEventListener(
+        "input",
+        filterBibliotheken
+    );
+}
+
+
+const taal =
+    document.getElementById("taal");
+
+if (taal) {
+    taal.addEventListener(
+        "change",
+        filterBibliotheken
+    );
+}
+
+
+const postcode =
+    document.getElementById("postcode");
+
+if (postcode) {
+    postcode.addEventListener(
+        "change",
+        filterBibliotheken
+    );
+}
+
+
+const sorteren =
+    document.getElementById("sorteren");
+
+if (sorteren) {
+    sorteren.addEventListener(
+        "change",
+        filterBibliotheken
+    );
+}
+
+
+toonFavorieten();
