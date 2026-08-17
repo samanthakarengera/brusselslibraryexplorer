@@ -237,9 +237,6 @@ Voorbeelden:
 - Favorieten weergeven
 - Gebruikersinput verwerken
 
-Er wordt onder andere gebruikgemaakt van:
-
-javascript
 
 
 ---
