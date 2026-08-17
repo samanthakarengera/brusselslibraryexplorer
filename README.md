@@ -54,6 +54,7 @@ Elke bibliotheek bevat onder andere:
 - ✅ Automatisch alle beschikbare postcodes laden
 - ✅ Sorteren op naam (A-Z en Z-A)
 - ✅ Bibliotheken openen in Google Maps
+- ✅ Favorieten opslaan
 
 ## Nog te ontwikkelen
 
