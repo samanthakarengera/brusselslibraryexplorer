@@ -239,10 +239,8 @@ Voorbeelden:
 
 Er wordt onder andere gebruikgemaakt van:
 
-```javascript
-document.getElementById()
+javascript
 
-document.getElementById()
 
 ---
 
@@ -390,3 +388,4 @@ ChatGPT werd gebruikt als ondersteuning tijdens de ontwikkeling van het project 
 - Checklist bijhouden
 
 ---
+
